@@ -260,27 +260,29 @@ tr:hover td {
   height: 100%;
 }
 
-.split-button .btn-trigger {
+.split-button .btn-main {
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
   border-right: 1px solid rgba(255, 255, 255, 0.1);
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.split-button .btn-main {
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
   flex-grow: 1;
 }
 
-/* Dropdown alignment when split trigger is on the left */
-.split-button .dropdown-menu {
-  left: 0;
-  right: auto;
+.split-button .btn-trigger {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  padding-left: 0.85rem;
+  padding-right: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem; /* Slightly larger arrow */
 }
+
+/* Dropdown alignment when split trigger is on the right */
+.split-button .dropdown-menu {
+  right: 0;
+  left: auto;
+}
+
 
 

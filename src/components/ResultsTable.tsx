@@ -254,19 +254,19 @@ export function ResultsTable({ data }: ResultsTableProps) {
         <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
           <div className="split-button">
             <button
+              className="btn btn-primary btn-main"
+              onClick={handleCopyAnexoJ}
+              style={(copiedAnexoJ || copiedFull) ? { backgroundColor: 'var(--success)' } : {}}
+            >
+              {copiedAnexoJ || copiedFull ? '✅ Copied!' : '📋 Copy for Anexo J'}
+            </button>
+            <button
               className="btn btn-primary btn-trigger"
               onClick={() => setShowExportDropdown(!showExportDropdown)}
               style={(copiedAnexoJ || copiedFull) ? { backgroundColor: 'var(--success)' } : {}}
               title="More export & copy options"
             >
               ▾
-            </button>
-            <button
-              className="btn btn-primary btn-main"
-              onClick={handleCopyAnexoJ}
-              style={(copiedAnexoJ || copiedFull) ? { backgroundColor: 'var(--success)' } : {}}
-            >
-              {copiedAnexoJ || copiedFull ? '✅ Copied!' : '📋 Copy for Anexo J'}
             </button>
             {showExportDropdown && (
               <>
