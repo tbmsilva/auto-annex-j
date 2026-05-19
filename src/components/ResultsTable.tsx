@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import type { AnexoJRow } from '../utils/fifoParser';
+import { downloadCSV } from '../utils/exporter';
+
 
 interface ResultsTableProps {
   data: AnexoJRow[];
@@ -104,6 +106,7 @@ export function formatHoldingPeriod(years: number): string {
 export function ResultsTable({ data }: ResultsTableProps) {
   const [copiedAnexoJ, setCopiedAnexoJ] = useState(false);
   const [copiedFull, setCopiedFull] = useState(false);
+  const [showExportDropdown, setShowExportDropdown] = useState(false);
 
   if (!data || data.length === 0) {
     return (
@@ -248,7 +251,43 @@ export function ResultsTable({ data }: ResultsTableProps) {
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', gap: '1rem', flexWrap: 'wrap' }}>
         <h2>Resultados para o Anexo J (Quadro 9.2)</h2>
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+          <div className="dropdown">
+            <button
+              className="btn btn-secondary"
+              onClick={() => setShowExportDropdown(!showExportDropdown)}
+            >
+              📥 Export Data ▾
+            </button>
+            {showExportDropdown && (
+              <>
+                <div 
+                  style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 40 }} 
+                  onClick={() => setShowExportDropdown(false)} 
+                />
+                <div className="dropdown-menu animate-fade-in" style={{ zIndex: 50 }}>
+                  <button 
+                    className="dropdown-item" 
+                    onClick={() => {
+                      downloadCSV(data, 'standard', 'anexo_j_standard.csv');
+                      setShowExportDropdown(false);
+                    }}
+                  >
+                    📄 Standard CSV (Comma)
+                  </button>
+                  <button 
+                    className="dropdown-item" 
+                    onClick={() => {
+                      downloadCSV(data, 'excel', 'anexo_j_excel_pt.csv');
+                      setShowExportDropdown(false);
+                    }}
+                  >
+                    📊 Excel CSV (Semicolon, PT)
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
           <button
             className="btn btn-secondary"
             onClick={handleCopyFull}
