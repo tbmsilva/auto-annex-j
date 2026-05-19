@@ -252,12 +252,21 @@ export function ResultsTable({ data }: ResultsTableProps) {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', gap: '1rem', flexWrap: 'wrap' }}>
         <h2>Resultados para o Anexo J (Quadro 9.2)</h2>
         <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-          <div className="dropdown">
+          <div className="split-button">
             <button
-              className="btn btn-secondary"
+              className="btn btn-primary btn-trigger"
               onClick={() => setShowExportDropdown(!showExportDropdown)}
+              style={(copiedAnexoJ || copiedFull) ? { backgroundColor: 'var(--success)' } : {}}
+              title="More export & copy options"
             >
-              📥 Export Data ▾
+              ▾
+            </button>
+            <button
+              className="btn btn-primary btn-main"
+              onClick={handleCopyAnexoJ}
+              style={(copiedAnexoJ || copiedFull) ? { backgroundColor: 'var(--success)' } : {}}
+            >
+              {copiedAnexoJ || copiedFull ? '✅ Copied!' : '📋 Copy for Anexo J'}
             </button>
             {showExportDropdown && (
               <>
@@ -269,11 +278,20 @@ export function ResultsTable({ data }: ResultsTableProps) {
                   <button 
                     className="dropdown-item" 
                     onClick={() => {
+                      handleCopyFull();
+                      setShowExportDropdown(false);
+                    }}
+                  >
+                    📊 Copy Full Table
+                  </button>
+                  <button 
+                    className="dropdown-item" 
+                    onClick={() => {
                       downloadCSV(data, 'standard', 'anexo_j_standard.csv');
                       setShowExportDropdown(false);
                     }}
                   >
-                    📄 Standard CSV (Comma)
+                    📄 Export Standard CSV (Comma)
                   </button>
                   <button 
                     className="dropdown-item" 
@@ -282,26 +300,12 @@ export function ResultsTable({ data }: ResultsTableProps) {
                       setShowExportDropdown(false);
                     }}
                   >
-                    📊 Excel CSV (Semicolon, PT)
+                    📊 Export Excel CSV (Semicolon, PT)
                   </button>
                 </div>
               </>
             )}
           </div>
-          <button
-            className="btn btn-secondary"
-            onClick={handleCopyFull}
-            style={copiedFull ? { backgroundColor: 'var(--success)' } : {}}
-          >
-            {copiedFull ? '✅ Copied!' : '📊 Copy Full Table'}
-          </button>
-          <button
-            className="btn btn-primary"
-            onClick={handleCopyAnexoJ}
-            style={copiedAnexoJ ? { backgroundColor: 'var(--success)' } : {}}
-          >
-            {copiedAnexoJ ? '✅ Copied!' : '📋 Copy for Anexo J'}
-          </button>
         </div>
       </div>
 
