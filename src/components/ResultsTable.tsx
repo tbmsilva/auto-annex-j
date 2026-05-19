@@ -266,7 +266,7 @@ export function ResultsTable({ data }: ResultsTableProps) {
               style={(copiedAnexoJ || copiedFull) ? { backgroundColor: 'var(--success)' } : {}}
               title="More export & copy options"
             >
-              ▾
+              <span className="arrow-icon">▾</span>
             </button>
             {showExportDropdown && (
               <>

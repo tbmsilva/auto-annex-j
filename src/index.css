@@ -249,15 +249,19 @@ tr:hover td {
 /* Split Button Styles */
 .split-button {
   display: inline-flex;
+  align-items: stretch; /* Stretch children to equal height */
   border-radius: 8px;
   position: relative;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  vertical-align: middle;
 }
 
 .split-button .btn {
   border-radius: 0;
   margin: 0;
-  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .split-button .btn-main {
@@ -272,10 +276,13 @@ tr:hover td {
   border-bottom-right-radius: 8px;
   padding-left: 0.85rem;
   padding-right: 0.85rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem; /* Slightly larger arrow */
+  font-size: 1rem; /* Same font size as main button to maintain layout height */
+}
+
+.split-button .arrow-icon {
+  font-size: 1.4rem; /* Enlarged arrow symbol only */
+  line-height: 1;
+  display: inline-block;
 }
 
 /* Dropdown alignment when split trigger is on the right */
@@ -283,6 +290,7 @@ tr:hover td {
   right: 0;
   left: auto;
 }
+
 
 
 
