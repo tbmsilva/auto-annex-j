@@ -1,73 +1,63 @@
-# React + TypeScript + Vite
+# Auto Annex J 📊🇵🇹
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A local-first, web-based tool designed to help Portuguese taxpayers effortlessly calculate their stock and ETF capital gains/losses for the **IRS Declaration (Anexo J, Quadro 9.2)** using the strict **FIFO (First-In, First-Out)** method.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+*   **Automated FIFO Calculation**: Upload your Trading212 CSVs, and the app mathematically matches sales to the oldest respective purchases, splitting rows accurately when required by AT.
+*   **Persistent Storage (IndexedDB)**: Upload a new CSV each year. The app saves your raw data securely in your browser's local storage and merges it chronologically. No data is ever sent to a server.
+*   **Country Code Extraction**: Automatically deduces the correct two-letter country code (e.g., `US`, `IE`) from the asset's ISIN.
+*   **Frictionless UX**: Premium dark-mode interface with drag-and-drop support and a one-click "Copy Table" button that exports directly to TSV format for easy pasting into Excel or the IRS portal.
+*   **Expense Apportionment**: Pro-rates broker fees, FX fees, and stamp duties across split sales accurately.
 
-## React Compiler
+## 🛠️ Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+*   **Frontend**: React, TypeScript, Vite
+*   **Styling**: Pure CSS (Custom properties, Glassmorphism)
+*   **Data Processing**: PapaParse
+*   **Storage**: IndexedDB (via `idb`)
+*   **Testing**: Vitest, React Testing Library, Playwright
 
-## Expanding the ESLint configuration
+## 🏃‍♂️ Quick Start
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Start the development server:
+   ```bash
+   npm run dev
+   ```
+3. Open `http://localhost:5173` in your browser.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🧪 Testing
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+The project uses a robust dual-testing setup to guarantee accuracy:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+# Run unit and component tests (Vitest)
+npm run test
+
+# Run End-to-End browser tests (Playwright)
+npm run test:e2e
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 📋 Project Status Tracker
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### ✅ Completed
+- [x] Initial React + Vite setup
+- [x] PapaParse integration for Trading212 CSVs
+- [x] Core FIFO matching algorithm
+- [x] Drag & drop file upload UI
+- [x] Copy-to-clipboard functionality for TSV
+- [x] IndexedDB integration for multi-year persistence
+- [x] Vitest unit testing suite
+- [x] Playwright E2E browser testing suite
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 🔄 In Progress
+- *Pending user confirmation on next steps.*
+
+### 📅 Planned (Future Improvements)
+- [ ] **Multi-Broker Support**: Create adapters to support CSV exports from other popular brokers in Portugal like Degiro, XTB, and Interactive Brokers.
+- [ ] **Dividends Reporting (Anexo E/J)**: Expand the parser to extract dividend payments and generate a separate copy-ready table for dividend reporting.
+- [ ] **Direct Excel/CSV Export**: Add a feature to download the final Anexo J table as a direct `.xlsx` or `.csv` file.
