@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Dropzone } from './components/Dropzone';
 import { ResultsTable } from './components/ResultsTable';
 import { parseMultipleCSVs, type AnexoJRow } from './utils/fifoParser';
@@ -130,6 +131,7 @@ function App() {
         </div>
       </main>
       <Analytics />
+      <SpeedInsights />
     </div>
   );
 }
