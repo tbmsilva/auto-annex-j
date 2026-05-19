@@ -8,6 +8,8 @@ export interface AnexoJRow {
   dataAquisicao: string;
   valorAquisicao: number;
   despesas: number;
+  tempoDetencaoAnos: number;
+  lucro: number;
 }
 
 interface BuyLot {
@@ -27,6 +29,30 @@ function formatDate(date: Date): string {
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const year = date.getFullYear();
   return `${day}/${month}/${year}`;
+}
+
+export function getHoldingPeriodYears(acquisitionDate: Date, realizationDate: Date): number {
+  // Normalize both dates to midnight to calculate calendar-day-based holding period.
+  const acq = new Date(acquisitionDate.getFullYear(), acquisitionDate.getMonth(), acquisitionDate.getDate());
+  const real = new Date(realizationDate.getFullYear(), realizationDate.getMonth(), realizationDate.getDate());
+
+  let years = real.getFullYear() - acq.getFullYear();
+  
+  const anniversaryThisYear = new Date(real.getFullYear(), acq.getMonth(), acq.getDate());
+  if (real < anniversaryThisYear) {
+    years--;
+  }
+  
+  const lastAnniversary = new Date(acq);
+  lastAnniversary.setFullYear(acq.getFullYear() + years);
+  
+  const nextAnniversary = new Date(acq);
+  nextAnniversary.setFullYear(acq.getFullYear() + years + 1);
+  
+  const yearLengthMs = nextAnniversary.getTime() - lastAnniversary.getTime();
+  const timeSinceLastAnniversaryMs = real.getTime() - lastAnniversary.getTime();
+  
+  return years + (timeSinceLastAnniversaryMs / yearLengthMs);
 }
 
 function getNum(row: any, prefixes: string[]): number {
@@ -174,14 +200,22 @@ function processTransactions(rows: any[]): AnexoJRow[] {
           const valorAquisicao = sharesToMatch * oldestBuy.pricePerShare;
           const despesas = (sharesToMatch * saleFeesPerShare) + (sharesToMatch * oldestBuy.feesPerShare);
           
+          const roundedRealizacao = Number(valorRealizacao.toFixed(2));
+          const roundedAquisicao = Number(valorAquisicao.toFixed(2));
+          const roundedDespesas = Number(despesas.toFixed(2));
+          const lucro = Number((roundedRealizacao - roundedAquisicao - roundedDespesas).toFixed(2));
+          const tempoDetencaoAnos = getHoldingPeriodYears(oldestBuy.date, tx.date);
+
           anexoJResults.push({
             ativo: `${tx.name} (${tx.ticker})`,
             pais,
             dataRealizacao: formatDate(tx.date),
-            valorRealizacao: Number(valorRealizacao.toFixed(2)),
+            valorRealizacao: roundedRealizacao,
             dataAquisicao: formatDate(oldestBuy.date),
-            valorAquisicao: Number(valorAquisicao.toFixed(2)),
-            despesas: Number(despesas.toFixed(2))
+            valorAquisicao: roundedAquisicao,
+            despesas: roundedDespesas,
+            tempoDetencaoAnos,
+            lucro
           });
 
           // Update queues

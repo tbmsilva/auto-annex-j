@@ -82,9 +82,9 @@ function App() {
           </div>
         )}
 
-        <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', alignItems: 'center', width: '100%' }}>
           
-          <div style={{ flex: '1 1 300px' }}>
+          <div style={{ width: '100%', maxWidth: '800px' }}>
             <Dropzone onFileLoaded={handleFileLoaded} onError={setError} />
             
             {files.length > 0 && (
@@ -109,7 +109,7 @@ function App() {
             )}
           </div>
 
-          <div style={{ flex: '2 1 600px' }}>
+          <div style={{ width: '100%' }}>
             {isProcessing && (
               <div className="glass-panel" style={{ padding: '4rem', textAlign: 'center' }}>
                 <h2>Processing your files...</h2>
@@ -121,7 +121,7 @@ function App() {
             )}
 
             {!isProcessing && !results && files.length === 0 && (
-              <div className="glass-panel empty-state" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <div className="glass-panel empty-state" style={{ padding: '4rem', textAlign: 'center' }}>
                 <h3>Awaiting Data</h3>
                 <p>Upload a CSV file to see your Anexo J table.</p>
               </div>

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseMultipleCSVs } from './fifoParser';
+import { parseMultipleCSVs, getHoldingPeriodYears } from './fifoParser';
 
 describe('fifoParser', () => {
   it('should correctly parse and match FIFO transactions', async () => {
@@ -47,5 +47,27 @@ Market buy,2022-01-01 10:00:00,US123,TEST,Test,10,-50,-50`; // Buy in 2022
     expect(result[0].dataRealizacao).toBe('01/01/2023');
     expect(result[0].valorAquisicao).toBe(50);
     expect(result[0].valorRealizacao).toBe(100);
+    expect(result[0].tempoDetencaoAnos).toBeCloseTo(1.0, 2);
+    expect(result[0].lucro).toBe(50);
+  });
+
+  describe('getHoldingPeriodYears', () => {
+    it('calculates exact year intervals correctly', () => {
+      const acq = new Date('2020-01-15T00:00:00');
+      const realExactly2Years = new Date('2022-01-15T00:00:00');
+      const realLess2Years = new Date('2022-01-14T00:00:00');
+      const realMore2Years = new Date('2022-01-16T00:00:00');
+
+      expect(getHoldingPeriodYears(acq, realExactly2Years)).toBe(2);
+      expect(getHoldingPeriodYears(acq, realLess2Years)).toBeLessThan(2);
+      expect(getHoldingPeriodYears(acq, realMore2Years)).toBeGreaterThan(2);
+    });
+
+    it('handles leap years correctly', () => {
+      const acq = new Date('2020-02-28T00:00:00'); // 2020 is a leap year
+      const real1Year = new Date('2021-02-28T00:00:00');
+      
+      expect(getHoldingPeriodYears(acq, real1Year)).toBe(1);
+    });
   });
 });
