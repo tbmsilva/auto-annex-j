@@ -29,20 +29,20 @@ test.describe('Auto Annex J E2E', () => {
     await expect(page.locator('text=mock_t212.csv')).toBeVisible();
 
     // Test Export Dropdown and Downloads
-    await page.locator('text=Export Data').click();
-    await expect(page.locator('text=Standard CSV')).toBeVisible();
-    await expect(page.locator('text=Excel CSV')).toBeVisible();
+    await page.locator('[title="More export & copy options"]').click();
+    await expect(page.locator('text=Export Standard CSV')).toBeVisible();
+    await expect(page.locator('text=Export Excel CSV')).toBeVisible();
 
     // Capture standard CSV download
     const downloadPromiseStandard = page.waitForEvent('download');
-    await page.locator('text=Standard CSV').click();
+    await page.locator('text=Export Standard CSV').click();
     const downloadStandard = await downloadPromiseStandard;
     expect(downloadStandard.suggestedFilename()).toBe('anexo_j_standard.csv');
 
     // Capture Excel CSV download
-    await page.locator('text=Export Data').click();
+    await page.locator('[title="More export & copy options"]').click();
     const downloadPromiseExcel = page.waitForEvent('download');
-    await page.locator('text=Excel CSV').click();
+    await page.locator('text=Export Excel CSV').click();
     const downloadExcel = await downloadPromiseExcel;
     expect(downloadExcel.suggestedFilename()).toBe('anexo_j_excel_pt.csv');
 
