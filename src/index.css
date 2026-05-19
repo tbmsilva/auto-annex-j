@@ -202,3 +202,95 @@ tr:hover td {
   display: flex;
   flex-direction: column;
 }
+
+/* Dropdown styles for Exports */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 0.5rem;
+  min-width: 240px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.dropdown-item {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s ease;
+  width: 100%;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Split Button Styles */
+.split-button {
+  display: inline-flex;
+  align-items: stretch; /* Stretch children to equal height */
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  vertical-align: middle;
+}
+
+.split-button .btn {
+  border-radius: 0;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.split-button .btn-main {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  flex-grow: 1;
+}
+
+.split-button .btn-trigger {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  padding-left: 0.85rem;
+  padding-right: 0.85rem;
+  font-size: 1rem; /* Same font size as main button to maintain layout height */
+}
+
+.split-button .arrow-icon {
+  font-size: 1.4rem; /* Enlarged arrow symbol only */
+  line-height: 1;
+  display: inline-block;
+}
+
+/* Dropdown alignment when split trigger is on the right */
+.split-button .dropdown-menu {
+  right: 0;
+  left: auto;
+}
+
+
+
+

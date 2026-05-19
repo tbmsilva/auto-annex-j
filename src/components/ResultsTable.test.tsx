@@ -112,13 +112,17 @@ describe('ResultsTable Component', () => {
     render(<ResultsTable data={mockData} />);
     
     const btnAnexoJ = screen.getByRole('button', { name: /Copy for Anexo J/i });
-    const btnFull = screen.getByRole('button', { name: /Copy Full Table/i });
     
     // Click Anexo J copy button
     fireEvent.click(btnAnexoJ);
     expect(await screen.findByText(/Copied!/i)).toBeInTheDocument();
     expect(navigator.clipboard.writeText).toHaveBeenCalled();
 
+    // Open dropdown to find Copy Full Table button
+    const triggerBtn = screen.getByTitle(/More export & copy options/i);
+    fireEvent.click(triggerBtn);
+    
+    const btnFull = screen.getByRole('button', { name: /Copy Full Table/i });
     // Click Full Table copy button
     fireEvent.click(btnFull);
     expect(await screen.findByText(/Copied!/i)).toBeInTheDocument();

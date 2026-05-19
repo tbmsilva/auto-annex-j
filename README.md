@@ -60,4 +60,4 @@ npm run test:e2e
 ### 📅 Planned (Future Improvements)
 - [ ] **Multi-Broker Support**: Create adapters to support CSV exports from other popular brokers in Portugal like Degiro, XTB, and Interactive Brokers.
 - [ ] **Dividends Reporting (Anexo E/J)**: Expand the parser to extract dividend payments and generate a separate copy-ready table for dividend reporting.
-- [ ] **Direct Excel/CSV Export**: Add a feature to download the final Anexo J table as a direct `.xlsx` or `.csv` file.
+- [x] **Direct Excel/CSV Export**: Add a feature to download the final Anexo J table as a direct `.xlsx` or `.csv` file.
