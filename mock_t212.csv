@@ -1,0 +1,6 @@
+Action,Time,ISIN,Ticker,Name,No. of shares,Price / share,Currency (Price / share),Exchange rate,Result (EUR),Total (EUR),Charge amount (EUR),Stamp duty reserve tax (EUR)
+Market buy,2022-01-15 14:30:00,IE00B4L5Y983,IWDA,iShares Core MSCI World,10,75.50,EUR,1,-755.00,-755.00,0,0
+Market buy,2022-06-10 10:15:00,IE00B4L5Y983,IWDA,iShares Core MSCI World,5,70.00,EUR,1,-350.00,-350.00,0,0
+Market sell,2023-03-20 16:45:00,IE00B4L5Y983,IWDA,iShares Core MSCI World,12,80.00,EUR,1,960.00,958.00,2.00,0
+Market buy,2023-01-05 15:00:00,US0378331005,AAPL,Apple,20,130.00,USD,0.92,-2392.00,-2395.00,1.00,2.00
+Market sell,2023-11-15 15:30:00,US0378331005,AAPL,Apple,10,180.00,USD,0.95,1710.00,1708.00,2.00,0
