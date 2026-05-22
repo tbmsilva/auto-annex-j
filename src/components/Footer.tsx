@@ -12,7 +12,7 @@ export function Footer() {
           rel="noopener noreferrer"
           className="footer-author-link"
         >
-          tbmsilva
+          Tomás Silva
         </a>
         <span>. All rights reserved.</span>
       </div>
