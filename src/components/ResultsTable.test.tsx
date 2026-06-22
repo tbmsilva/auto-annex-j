@@ -5,7 +5,7 @@ import type { AnexoJRow } from '../utils/fifoParser';
 
 describe('ResultsTable Component', () => {
   it('renders empty state when no data is provided', () => {
-    render(<ResultsTable data={[]} />);
+    render(<ResultsTable dataByYear={new Map()} />);
     expect(screen.getByText(/No sales data found/i)).toBeInTheDocument();
   });
 
@@ -24,7 +24,7 @@ describe('ResultsTable Component', () => {
       }
     ];
 
-    render(<ResultsTable data={mockData} />);
+    render(<ResultsTable dataByYear={new Map([[2023, mockData]])} />);
     
     expect(screen.getByText('Apple (AAPL)')).toBeInTheDocument();
     expect(screen.getByText('US')).toBeInTheDocument();
@@ -80,7 +80,7 @@ describe('ResultsTable Component', () => {
     // Imposto Estimado (28%) = 817 * 0.28 = 228.76.
     // Total Lucro = 490 + 480 - 105 = 865.
 
-    render(<ResultsTable data={mockData} />);
+    render(<ResultsTable dataByYear={new Map([[2023, mockData]])} />);
 
     // Check General Totals
     expect(screen.getByText('Total Realizações:')).toBeInTheDocument();
@@ -109,7 +109,7 @@ describe('ResultsTable Component', () => {
       },
     });
 
-    render(<ResultsTable data={mockData} />);
+    render(<ResultsTable dataByYear={new Map([[2023, mockData]])} />);
     
     const btnAnexoJ = screen.getByRole('button', { name: /Copy for Anexo J/i });
     
