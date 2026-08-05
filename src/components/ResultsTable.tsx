@@ -265,8 +265,11 @@ export function ResultsTable({ data }: ResultsTableProps) {
               onClick={() => setShowExportDropdown(!showExportDropdown)}
               style={(copiedAnexoJ || copiedFull) ? { backgroundColor: 'var(--success)' } : {}}
               title="More export & copy options"
+              aria-label="More export and copy options"
+              aria-expanded={showExportDropdown}
+              aria-haspopup="true"
             >
-              <span className="arrow-icon">▾</span>
+              <span className="arrow-icon" style={{ transform: showExportDropdown ? 'rotate(180deg)' : 'none' }}>▾</span>
             </button>
             {showExportDropdown && (
               <>
@@ -274,7 +277,7 @@ export function ResultsTable({ data }: ResultsTableProps) {
                   style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 40 }} 
                   onClick={() => setShowExportDropdown(false)} 
                 />
-                <div className="dropdown-menu animate-fade-in" style={{ zIndex: 50 }}>
+                <div className="dropdown-menu" role="menu" aria-label="Export options" style={{ zIndex: 50 }}>
                   <button 
                     className="dropdown-item" 
                     onClick={() => {

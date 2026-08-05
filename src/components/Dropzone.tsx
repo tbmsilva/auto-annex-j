@@ -50,6 +50,13 @@ export function Dropzone({ onFileLoaded, onError }: DropzoneProps) {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      document.getElementById('file-upload')?.click();
+    }
+  };
+
   return (
     <div 
       className={`dropzone ${isDragActive ? 'active' : ''}`}
@@ -57,6 +64,10 @@ export function Dropzone({ onFileLoaded, onError }: DropzoneProps) {
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
       onClick={() => document.getElementById('file-upload')?.click()}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
+      aria-label="Upload Trading212 CSV file"
     >
       <input 
         id="file-upload" 
@@ -66,9 +77,11 @@ export function Dropzone({ onFileLoaded, onError }: DropzoneProps) {
         style={{ display: 'none' }}
         onChange={handleChange}
       />
-      <div className="dropzone-icon">📄</div>
-      <h3>Drag & Drop your Trading212 CSV here</h3>
-      <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem' }}>
+      <div className="dropzone-icon" aria-hidden="true">📄</div>
+      <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)' }}>
+        Drag & Drop your Trading212 CSV here
+      </h3>
+      <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem', fontSize: '0.95rem' }}>
         or click to browse from your computer
       </p>
     </div>
