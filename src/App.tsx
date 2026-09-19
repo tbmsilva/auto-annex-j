@@ -4,12 +4,12 @@ import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Dropzone } from './components/Dropzone';
 import { ResultsTable } from './components/ResultsTable';
 import { Footer } from './components/Footer';
-import { parseMultipleCSVs, type AnexoJRow } from './utils/fifoParser';
+import { parseMultipleCSVsByYear, type AnexoJRow } from './utils/fifoParser';
 import { getFiles, addFile, removeFile, clearFiles, type CsvFile } from './utils/db';
 
 
 function App() {
-  const [results, setResults] = useState<AnexoJRow[] | null>(null);
+  const [resultsByYear, setResultsByYear] = useState<Map<number, AnexoJRow[]> | null>(null);
   const [files, setFiles] = useState<CsvFile[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -21,10 +21,10 @@ function App() {
       setFiles(storedFiles);
       if (storedFiles.length > 0) {
         const contents = storedFiles.map(f => f.content);
-        const parsedData = await parseMultipleCSVs(contents);
-        setResults(parsedData);
+        const parsedData = await parseMultipleCSVsByYear(contents);
+        setResultsByYear(parsedData);
       } else {
-        setResults(null);
+        setResultsByYear(null);
       }
     } catch (err) {
       console.error(err);
@@ -129,11 +129,11 @@ function App() {
               </div>
             )}
 
-            {!isProcessing && results && (
-              <ResultsTable data={results} />
+            {!isProcessing && resultsByYear && resultsByYear.size > 0 && (
+              <ResultsTable dataByYear={resultsByYear} />
             )}
 
-            {!isProcessing && !results && files.length === 0 && (
+            {!isProcessing && (!resultsByYear || resultsByYear.size === 0) && files.length === 0 && (
               <div className="glass-panel empty-state" style={{ padding: '4rem', textAlign: 'center' }}>
                 <h3>Awaiting Data</h3>
                 <p>Upload a CSV file to see your Anexo J table.</p>

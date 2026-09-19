@@ -243,3 +243,24 @@ function processTransactions(rows: any[]): AnexoJRow[] {
 
   return anexoJResults;
 }
+
+function getYearFromDataRealizacao(dateStr: string): number {
+  // Format is DD/MM/YYYY
+  const parts = dateStr.split('/');
+  return Number(parts[2]);
+}
+
+export async function parseMultipleCSVsByYear(csvTexts: string[]): Promise<Map<number, AnexoJRow[]>> {
+  const allRows = await parseMultipleCSVs(csvTexts);
+  const byYear = new Map<number, AnexoJRow[]>();
+
+  for (const row of allRows) {
+    const year = getYearFromDataRealizacao(row.dataRealizacao);
+    if (!byYear.has(year)) {
+      byYear.set(year, []);
+    }
+    byYear.get(year)!.push(row);
+  }
+
+  return byYear;
+}

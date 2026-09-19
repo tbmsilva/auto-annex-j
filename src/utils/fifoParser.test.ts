@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseMultipleCSVs, getHoldingPeriodYears } from './fifoParser';
+import { parseMultipleCSVs, parseMultipleCSVsByYear, getHoldingPeriodYears } from './fifoParser';
 
 describe('fifoParser', () => {
   it('should correctly parse and match FIFO transactions', async () => {
@@ -68,6 +68,49 @@ Market buy,2022-01-01 10:00:00,US123,TEST,Test,10,-50,-50`; // Buy in 2022
       const real1Year = new Date('2021-02-28T00:00:00');
       
       expect(getHoldingPeriodYears(acq, real1Year)).toBe(1);
+    });
+  });
+
+  describe('parseMultipleCSVsByYear', () => {
+    it('should group results by realization year while FIFO works across years', async () => {
+      const csv = `Action,Time,ISIN,Ticker,Name,No. of shares,Result (EUR),Total (EUR)
+Market buy,2022-03-01 10:00:00,US123,TEST,Test Stock,10,-500,-500
+Market sell,2023-06-15 10:00:00,US123,TEST,Test Stock,5,400,400
+Market sell,2024-02-10 10:00:00,US123,TEST,Test Stock,5,600,600`;
+
+      const byYear = await parseMultipleCSVsByYear([csv]);
+      
+      // Should have 2 years of sales: 2023 and 2024
+      expect(byYear.size).toBe(2);
+      expect(byYear.has(2023)).toBe(true);
+      expect(byYear.has(2024)).toBe(true);
+
+      // 2023: sold 5 shares, acquired at 50/share = 250 acquisition, 400 realization
+      const rows2023 = byYear.get(2023)!;
+      expect(rows2023).toHaveLength(1);
+      expect(rows2023[0].valorAquisicao).toBe(250);
+      expect(rows2023[0].valorRealizacao).toBe(400);
+      expect(rows2023[0].dataRealizacao).toBe('15/06/2023');
+      expect(rows2023[0].dataAquisicao).toBe('01/03/2022');
+
+      // 2024: sold 5 shares, acquired at 50/share = 250 acquisition, 600 realization
+      const rows2024 = byYear.get(2024)!;
+      expect(rows2024).toHaveLength(1);
+      expect(rows2024[0].valorAquisicao).toBe(250);
+      expect(rows2024[0].valorRealizacao).toBe(600);
+      expect(rows2024[0].dataRealizacao).toBe('10/02/2024');
+      expect(rows2024[0].dataAquisicao).toBe('01/03/2022');
+    });
+
+    it('should return a single year when all sales are in the same year', async () => {
+      const csv = `Action,Time,ISIN,Ticker,Name,No. of shares,Result (EUR),Total (EUR)
+Market buy,2022-01-01 10:00:00,US123,TEST,Test,10,-100,-100
+Market sell,2023-01-01 10:00:00,US123,TEST,Test,10,200,200`;
+
+      const byYear = await parseMultipleCSVsByYear([csv]);
+      expect(byYear.size).toBe(1);
+      expect(byYear.has(2023)).toBe(true);
+      expect(byYear.get(2023)).toHaveLength(1);
     });
   });
 });
