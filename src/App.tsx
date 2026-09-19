@@ -92,16 +92,27 @@ function App() {
             {files.length > 0 && (
               <div className="glass-panel" style={{ marginTop: '2rem', padding: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                  <h3 style={{ margin: 0 }}>Uploaded Files ({files.length})</h3>
-                  <button onClick={handleClearAll} style={{ background: 'transparent', color: 'var(--danger)', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>
+                  <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 600 }}>Uploaded Files ({files.length})</h3>
+                  <button 
+                    onClick={handleClearAll} 
+                    style={{ background: 'transparent', color: 'var(--danger)', border: 'none', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 500, padding: '0.2rem 0.5rem', borderRadius: '6px' }}
+                    aria-label="Clear all uploaded files"
+                  >
                     Clear All
                   </button>
                 </div>
-                <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', listStyle: 'none' }}>
                   {files.map(f => (
-                    <li key={f.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', borderRadius: '8px' }}>
-                      <span style={{ fontSize: '0.9rem', wordBreak: 'break-all' }}>📄 {f.name}</span>
-                      <button onClick={() => handleDeleteFile(f.id)} style={{ background: 'transparent', border: 'none', color: 'var(--danger)', cursor: 'pointer', fontSize: '1.2rem' }} title="Remove file">
+                    <li key={f.id} className="file-chip">
+                      <span style={{ fontSize: '0.9rem', wordBreak: 'break-all', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <span aria-hidden="true">📄</span> {f.name}
+                      </span>
+                      <button 
+                        onClick={() => handleDeleteFile(f.id)} 
+                        className="file-chip-remove"
+                        title={`Remove ${f.name}`}
+                        aria-label={`Remove file ${f.name}`}
+                      >
                         ×
                       </button>
                     </li>
