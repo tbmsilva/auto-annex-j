@@ -3,8 +3,10 @@ import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Dropzone } from './components/Dropzone';
 import { ResultsTable } from './components/ResultsTable';
+import { Footer } from './components/Footer';
 import { parseMultipleCSVsByYear, type AnexoJRow } from './utils/fifoParser';
 import { getFiles, addFile, removeFile, clearFiles, type CsvFile } from './utils/db';
+
 
 function App() {
   const [resultsByYear, setResultsByYear] = useState<Map<number, AnexoJRow[]> | null>(null);
@@ -130,6 +132,7 @@ function App() {
 
         </div>
       </main>
+      <Footer />
       <Analytics />
       <SpeedInsights />
     </div>

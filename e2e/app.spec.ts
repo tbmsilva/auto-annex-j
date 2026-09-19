@@ -6,8 +6,16 @@ test.describe('Auto Annex J E2E', () => {
     await page.goto('/');
 
     // Check initial state
-    await expect(page.locator('text=Auto Annex J')).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: 'Auto Annex J' })).toBeVisible();
     await expect(page.locator('text=Awaiting Data')).toBeVisible();
+
+    // Verify footer is present and contains correct links & copyright
+    const footer = page.locator('#app-footer');
+    await expect(footer).toBeVisible();
+    await expect(page.locator('#footer-github-link')).toHaveAttribute('href', 'https://github.com/tbmsilva');
+    await expect(page.locator('#footer-linkedin-link')).toHaveAttribute('href', 'https://linkedin.com/in/tbmsilva');
+    await expect(footer).toContainText('tbmsilva');
+    await expect(footer).toContainText(new Date().getFullYear().toString());
 
     // Setup file to upload
     const fileChooserPromise = page.waitForEvent('filechooser');
