@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { AnexoJRow } from '../utils/fifoParser';
 import { downloadCSV } from '../utils/exporter';
 
@@ -113,6 +113,13 @@ export function ResultsTable({ dataByYear }: ResultsTableProps) {
   const [copiedFull, setCopiedFull] = useState(false);
   const [showExportDropdown, setShowExportDropdown] = useState(false);
 
+  // Keep selectedYear in sync when available years change (e.g. new files uploaded/removed)
+  useEffect(() => {
+    if (sortedYears.length > 0 && !sortedYears.includes(selectedYear)) {
+      setSelectedYear(sortedYears[0]);
+    }
+  }, [sortedYears, selectedYear]);
+
   const data = dataByYear.get(selectedYear) ?? [];
 
   if (sortedYears.length === 0) {
@@ -173,23 +180,30 @@ export function ResultsTable({ dataByYear }: ResultsTableProps) {
   return (
     <div className="animate-fade-in">
 
-      {/* Year Selector */}
-      {sortedYears.length > 1 && (
-        <div className="year-selector" style={{ marginBottom: '1.5rem' }}>
-          <span className="year-selector-label">Ano Fiscal:</span>
-          <div className="year-pills">
-            {sortedYears.map(year => (
-              <button
-                key={year}
-                className={`year-pill ${year === selectedYear ? 'year-pill-active' : ''}`}
-                onClick={() => setSelectedYear(year)}
-              >
-                {year}
-              </button>
-            ))}
+      {/* Year Selector — always shown so the user can pick which year to declare */}
+      <div className="year-selector glass-panel" style={{ marginBottom: '1.5rem', padding: '1.25rem 1.5rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+            <span className="year-selector-label">Ano de Declaração IRS:</span>
+            <div className="year-pills">
+              {sortedYears.map(year => (
+                <button
+                  key={year}
+                  className={`year-pill ${year === selectedYear ? 'year-pill-active' : ''}`}
+                  onClick={() => setSelectedYear(year)}
+                >
+                  {year}
+                </button>
+              ))}
+            </div>
           </div>
+          {sortedYears.length > 1 && (
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: 0, lineHeight: '1.3' }}>
+              Selecione o ano fiscal que pretende declarar. Apenas as vendas realizadas em {selectedYear} serão apresentadas.
+            </p>
+          )}
         </div>
-      )}
+      </div>
 
       {data.length === 0 ? (
         <div className="glass-panel empty-state animate-fade-in">
