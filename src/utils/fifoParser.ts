@@ -111,10 +111,17 @@ export function parseCSV(csvText: string): Promise<AnexoJRow[]> {
   });
 }
 
+function getTimeValue(row: any): string | undefined {
+  // T212 changed the column name from "Time" to "Time (UTC)" at some point.
+  // Support both formats.
+  const timeKey = Object.keys(row).find(k => k.toLowerCase().startsWith('time'));
+  return timeKey ? row[timeKey] : undefined;
+}
+
 function processTransactions(rows: any[]): AnexoJRow[] {
   // 1. Filter and normalize rows
   const transactions = rows
-    .filter(row => row['Action'] && row['ISIN'] && row['Time'] && row['No. of shares'])
+    .filter(row => row['Action'] && row['ISIN'] && getTimeValue(row) && row['No. of shares'])
     .map(row => {
       const action = String(row['Action']).toLowerCase();
       const isBuy = action.includes('buy');
@@ -146,7 +153,7 @@ function processTransactions(rows: any[]): AnexoJRow[] {
       return {
         isBuy,
         isSell,
-        date: parseT212Date(String(row['Time'])),
+        date: parseT212Date(String(getTimeValue(row))),
         isin: String(row['ISIN']),
         ticker: String(row['Ticker']),
         name: String(row['Name']),
